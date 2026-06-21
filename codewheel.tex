@@ -12,7 +12,7 @@
 \begin{center}
 \begin{tikzpicture}[every node/.style={font=\sffamily\bfseries, inner sep=0pt, align=center}]
   % Outer static wheel
-  \coordinate (O) at (0,40mm);
+  \coordinate (O) at (-20mm,40mm);
   \def\outerRo{70mm}
   \def\outerRi{55mm}
   \def\outerLabelRo{62.5mm}
@@ -65,34 +65,52 @@
     \node[font=\sffamily\bfseries\Huge, rotate=\ang-90] at ($(O)+(\ang: { (\decodedLabelRo + \decodedLabelRi)/2 })$) {\letter};
   }
 
-  \node[font=\sffamily\bfseries\footnotesize] at ($(O)+(0,-\outerRo-10mm)$) {Wheel 1: outer coded letters / inner decoded letters};
-
   % Inner ring to cut out
-  \coordinate (I) at (0,-105mm);
-  \def\innerRo{45mm}
+  \coordinate (I) at (35mm,-105mm);
+  \def\innerRo{\outerRi}
   \def\innerRi{25mm}
-  \def\windowR{8mm}
+  \newlength{\letterheight}
+  \settoheight{\letterheight}{\Huge A}
+  \pgfmathsetlengthmacro\windowR{\letterheight/2}
   \def\windowAngle{95}
-  \def\windowDist{33mm}
+  \def\windowDist{\decodedLabelRo}
   \def\spindleR{4mm}
   \def\arrowAngle{72}
 
   \fill[white] (I) circle (\innerRo);
   \draw[line width=2pt] (I) circle (\innerRo);
-  \draw[line width=2pt] (I) circle (\innerRi);
+  % highlight one segment on Wheel 2 (angular width = one letter), centered at 0 degrees
+  \pgfmathsetmacro\angCenter{0}
+  \pgfmathsetmacro\angStart{\angCenter + \letterAngle/2}
+  \pgfmathsetmacro\angEnd{\angCenter - \letterAngle/2}
+  \fill[red!70] (I) -- ($(I)+(\angStart: \innerRo)$) arc (\angStart: \angEnd: \innerRo) -- cycle;
+  \draw[line width=1pt] (I) -- ($(I)+(\angStart: \innerRo)$) arc (\angStart: \angEnd: \innerRo) -- cycle;
+  % second wedge rotated by 4 segments, stops at decodedLabelRo
+  \pgfmathsetmacro\angCenterTwo{4*\letterAngle}
+  \pgfmathsetmacro\angStartTwo{\angCenterTwo + \letterAngle/2}
+  \pgfmathsetmacro\angEndTwo{\angCenterTwo - \letterAngle/2}
+  \fill[paleblue] (I) -- ($(I)+(\angStartTwo: \decodedLabelRo)$) arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- cycle;
+  \draw[line width=1pt] (I) -- ($(I)+(\angStartTwo: \decodedLabelRo)$) arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- cycle;
+  % overlay decoded-text area for second wedge in pale blue
+  \fill[paleblue] ($(I)+(\angStartTwo: \decodedLabelRi)$) -- ($(I)+(\angStartTwo: \decodedLabelRo)$)
+    arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- ($(I)+(\angEndTwo: \decodedLabelRi)$)
+    arc (\angEndTwo: \angStartTwo: \decodedLabelRi) -- cycle;
+  % keep previous black overlay on decoded-text area as requested
+  \fill[black] ($(I)+(\angStartTwo: \decodedLabelRi)$) -- ($(I)+(\angStartTwo: \decodedLabelRo)$)
+    arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- ($(I)+(\angEndTwo: \decodedLabelRi)$)
+    arc (\angEndTwo: \angStartTwo: \decodedLabelRi) -- cycle;
 
   \coordinate (W) at ($(I)+(\windowAngle:\windowDist)$);
-  \fill[white] (W) circle (\windowR);
-  \draw[line width=1pt,dashed] (W) circle (\windowR);
-  \node[font=\sffamily\bfseries\scriptsize, anchor=south] at ($(W)+(0,3mm)$) {cut-out};
+  \fill[black] (W) circle (\windowR);
 
   \fill[white] (I) circle (\spindleR);
   \draw[line width=1pt] (I) circle (\spindleR);
 
-  \draw[line width=2pt,-{Stealth[length=3mm,width=1.5mm]}] ($(I)+(\arrowAngle: \innerRi+3mm)$) -- ($(I)+(\arrowAngle: \innerRo-3mm)$);
-  \node[font=\sffamily\bfseries\scriptsize, anchor=south] at ($(I)+(\arrowAngle: \innerRo+6mm)$) {arrow};
+  % central points
+  \fill[black] (O) circle (1mm);
+  \fill[black] (I) circle (1mm);
 
-  \node[font=\sffamily\bfseries\footnotesize] at ($(I)+(0,-\innerRo-10mm)$) {Wheel 2: inner ring with cut-out and arrow};
+  % arrow removed per request
 \end{tikzpicture}
 \end{center}
 \end{document}
