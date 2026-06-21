@@ -1,0 +1,98 @@
+\documentclass[a4paper]{article}
+\usepackage[margin=10mm]{geometry}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc}
+\definecolor{lightbrown}{RGB}{222,184,135}
+\definecolor{lightred}{RGB}{255,204,203}
+\definecolor{palegreen}{RGB}{198,234,195}
+\definecolor{paleblue}{RGB}{199,226,255}
+\pagestyle{empty}
+\begin{document}
+\begin{center}
+\begin{tikzpicture}[every node/.style={font=\sffamily\bfseries, inner sep=0pt, align=center}]
+  % Outer static wheel
+  \coordinate (O) at (0,40mm);
+  \def\outerRo{70mm}
+  \def\outerRi{55mm}
+  \def\outerLabelRo{62.5mm}
+  \def\outerLabelRi{40mm}
+  \def\decodedLabelRo{49mm}
+  \def\decodedLabelRi{37mm}
+  \def\letterAngle{360/26}
+
+  \foreach \i in {0,...,25} {
+    \pgfmathsetmacro\angStart{90-\i*\letterAngle}
+    \pgfmathsetmacro\angEnd{90-(\i+1)*\letterAngle}
+    \ifodd\i
+      \def\sectcolor{lightred}
+    \else
+      \def\sectcolor{lightbrown}
+    \fi
+    \fill[\sectcolor] ($(O)+(\angStart: \outerRi)$) -- ($(O)+(\angStart: \outerRo)$)
+      arc (\angStart: \angEnd: \outerRo) -- ($(O)+(\angEnd: \outerRi)$)
+      arc (\angEnd: \angStart: \outerRi) -- cycle;
+  }
+
+  \foreach \i in {0,...,25} {
+    \pgfmathsetmacro\angStart{90-\i*\letterAngle}
+    \pgfmathsetmacro\angEnd{90-(\i+1)*\letterAngle}
+    \ifodd\i
+      \def\sectcolor{paleblue}
+    \else
+      \def\sectcolor{palegreen}
+    \fi
+    \fill[\sectcolor] ($(O)+(\angStart: \decodedLabelRi)$) -- ($(O)+(\angStart: \decodedLabelRo)$)
+      arc (\angStart: \angEnd: \decodedLabelRo) -- ($(O)+(\angEnd: \decodedLabelRi)$)
+      arc (\angEnd: \angStart: \decodedLabelRi) -- cycle;
+  }
+
+  \fill[white] (O) circle (\decodedLabelRi);
+  \draw[line width=2pt] (O) circle (\outerRo);
+  \draw[line width=2pt] (O) circle (\outerRi);
+
+  \foreach \i in {0,...,25} {
+    \draw[line width=0.4pt] ($(O)+(90-\i*\letterAngle: \outerRi)$) -- ($(O)+(90-\i*\letterAngle: \outerRo)$);
+  }
+
+  \foreach \letter [count=\idx from 0] in {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z} {
+    \pgfmathsetmacro\ang{90-(\idx+0.5)*\letterAngle}
+    \node[font=\sffamily\bfseries\Huge, rotate=\ang-90] at ($(O)+(\ang: \outerLabelRo)$) {\letter};
+  }
+
+  \foreach \letter [count=\idx from 0] in {Q,X,M,F,C,R,L,U,I,P,T,A,H,N,Y,B,W,D,G,E,K,O,S,Z,V,J} {
+    \pgfmathsetmacro\ang{90-(\idx+0.5)*\letterAngle}
+    \node[font=\sffamily\bfseries\Huge, rotate=\ang-90] at ($(O)+(\ang: \decodedLabelRo)$) {\letter};
+  }
+
+  \node[font=\sffamily\bfseries\footnotesize] at ($(O)+(0,-\outerRo-10mm)$) {Wheel 1: outer coded letters / inner decoded letters};
+
+  % Inner ring to cut out
+  \coordinate (I) at (0,-105mm);
+  \def\innerRo{45mm}
+  \def\innerRi{25mm}
+  \def\windowR{8mm}
+  \def\windowAngle{95}
+  \def\windowDist{33mm}
+  \def\spindleR{4mm}
+  \def\arrowAngle{72}
+
+  \fill[white] (I) circle (\innerRo);
+  \draw[line width=2pt] (I) circle (\innerRo);
+  \draw[line width=2pt] (I) circle (\innerRi);
+
+  \coordinate (W) at ($(I)+(\windowAngle:\windowDist)$);
+  \fill[white] (W) circle (\windowR);
+  \draw[line width=1pt,dashed] (W) circle (\windowR);
+  \node[font=\sffamily\bfseries\scriptsize, anchor=south] at ($(W)+(0,3mm)$) {cut-out};
+
+  \fill[white] (I) circle (\spindleR);
+  \draw[line width=1pt] (I) circle (\spindleR);
+
+  \draw[line width=2pt,-{Stealth[length=3mm,width=1.5mm]}] ($(I)+(\arrowAngle: \innerRi+3mm)$) -- ($(I)+(\arrowAngle: \innerRo-3mm)$);
+  \node[font=\sffamily\bfseries\scriptsize, anchor=south] at ($(I)+(\arrowAngle: \innerRo+6mm)$) {arrow};
+
+  \node[font=\sffamily\bfseries\footnotesize] at ($(I)+(0,-\innerRo-10mm)$) {Wheel 2: inner ring with cut-out and arrow};
+\end{tikzpicture}
+\end{center}
+\end{document}
