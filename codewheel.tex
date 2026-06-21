@@ -55,9 +55,7 @@
   \draw[line width=2pt] (O) circle (\outerRo);
   \draw[line width=2pt] (O) circle (\outerRi);
 
-  \foreach \i in {0,...,25} {
-    \draw[line width=0.4pt] ($(O)+(90-\i*\letterAngle: \outerRi)$) -- ($(O)+(90-\i*\letterAngle: \outerRo)$);
-  }
+  % radial separators removed to avoid black lines between sections
 
   \foreach \letter [count=\idx from 0] in {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z} {
     \pgfmathsetmacro\ang{90-(\idx+0.5)*\letterAngle}
@@ -88,13 +86,11 @@
   \pgfmathsetmacro\angStart{\angCenter + \letterAngle/2}
   \pgfmathsetmacro\angEnd{\angCenter - \letterAngle/2}
   \fill[red!70] (I) -- ($(I)+(\angStart: \innerRo)$) arc (\angStart: \angEnd: \innerRo) -- cycle;
-  \draw[line width=1pt] (I) -- ($(I)+(\angStart: \innerRo)$) arc (\angStart: \angEnd: \innerRo) -- cycle;
   % second wedge rotated by 4 segments, stops at decodedLabelRo
   \pgfmathsetmacro\angCenterTwo{4*\letterAngle-90}
   \pgfmathsetmacro\angStartTwo{\angCenterTwo + \letterAngle/2}
   \pgfmathsetmacro\angEndTwo{\angCenterTwo - \letterAngle/2}
   \fill[paleblue] (I) -- ($(I)+(\angStartTwo: \decodedLabelRo)$) arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- cycle;
-  \draw[line width=1pt] (I) -- ($(I)+(\angStartTwo: \decodedLabelRo)$) arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- cycle;
   % overlay decoded-text area for second wedge in pale blue
   \fill[paleblue] ($(I)+(\angStartTwo: \decodedLabelRi)$) -- ($(I)+(\angStartTwo: \decodedLabelRo)$)
     arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- ($(I)+(\angEndTwo: \decodedLabelRi)$)
