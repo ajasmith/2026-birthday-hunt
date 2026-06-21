@@ -7,6 +7,7 @@
 \definecolor{lightred}{RGB}{255,204,203}
 \definecolor{palegreen}{RGB}{198,234,195}
 \definecolor{paleblue}{RGB}{199,226,255}
+\definecolor{palecoral}{RGB}{227,245,238}
 \pagestyle{empty}
 \begin{document}
 \begin{center}
@@ -17,8 +18,9 @@
   \def\outerRi{55mm}
   \def\outerLabelRo{62.5mm}
   \def\outerLabelRi{40mm}
-  \def\decodedLabelRo{49mm}
-  \def\decodedLabelRi{37mm}
+  % decoded label radii moved 20% closer to centre
+  \def\decodedLabelRo{39.2mm}
+  \def\decodedLabelRi{29.6mm}
   \def\letterAngle{360/26}
 
   \foreach \i in {0,...,25} {
@@ -77,16 +79,16 @@
   \def\spindleR{4mm}
   \def\arrowAngle{72}
 
-  \fill[white] (I) circle (\innerRo);
+  \fill[palecoral] (I) circle (\innerRo);
   \draw[line width=2pt] (I) circle (\innerRo);
   % highlight one segment on Wheel 2 (angular width = one letter), centered at 0 degrees
-  \pgfmathsetmacro\angCenter{0}
+  \pgfmathsetmacro\angCenter{-90}
   \pgfmathsetmacro\angStart{\angCenter + \letterAngle/2}
   \pgfmathsetmacro\angEnd{\angCenter - \letterAngle/2}
   \fill[red!70] (I) -- ($(I)+(\angStart: \innerRo)$) arc (\angStart: \angEnd: \innerRo) -- cycle;
   \draw[line width=1pt] (I) -- ($(I)+(\angStart: \innerRo)$) arc (\angStart: \angEnd: \innerRo) -- cycle;
   % second wedge rotated by 4 segments, stops at decodedLabelRo
-  \pgfmathsetmacro\angCenterTwo{4*\letterAngle}
+  \pgfmathsetmacro\angCenterTwo{4*\letterAngle-90}
   \pgfmathsetmacro\angStartTwo{\angCenterTwo + \letterAngle/2}
   \pgfmathsetmacro\angEndTwo{\angCenterTwo - \letterAngle/2}
   \fill[paleblue] (I) -- ($(I)+(\angStartTwo: \decodedLabelRo)$) arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- cycle;
@@ -103,7 +105,7 @@
   \coordinate (W) at ($(I)+(\windowAngle:\windowDist)$);
   \fill[black] (W) circle (\windowR);
 
-  \fill[white] (I) circle (\spindleR);
+  \fill[palecoral] (I) circle (\spindleR);
   \draw[line width=1pt] (I) circle (\spindleR);
 
   % central points
