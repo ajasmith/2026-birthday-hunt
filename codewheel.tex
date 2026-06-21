@@ -62,7 +62,7 @@
 
   \foreach \letter [count=\idx from 0] in {Q,X,M,F,C,R,L,U,I,P,T,A,H,N,Y,B,W,D,G,E,K,O,S,Z,V,J} {
     \pgfmathsetmacro\ang{90-(\idx+0.5)*\letterAngle}
-    \node[font=\sffamily\bfseries\Huge, rotate=\ang-90] at ($(O)+(\ang: \decodedLabelRo)$) {\letter};
+    \node[font=\sffamily\bfseries\Huge, rotate=\ang-90] at ($(O)+(\ang: { (\decodedLabelRo + \decodedLabelRi)/2 })$) {\letter};
   }
 
   \node[font=\sffamily\bfseries\footnotesize] at ($(O)+(0,-\outerRo-10mm)$) {Wheel 1: outer coded letters / inner decoded letters};
