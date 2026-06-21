@@ -1,6 +1,8 @@
 \documentclass[a4paper]{article}
 \usepackage[margin=10mm]{geometry}
+\usepackage[T1]{fontenc}
 \usepackage{xcolor}
+\usepackage{calligra}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,calc}
 \definecolor{lightbrown}{RGB}{222,184,135}
@@ -111,6 +113,10 @@
   % central points
   \fill[black] (O) circle (1mm);
   \fill[black] (I) circle (1mm);
+
+  % top-hemisphere cursive text for Wheel 2 (upright)
+    \pgfmathsetlengthmacro\topRad{0.35*\innerRo}
+    \node[anchor=center, inner sep=0pt, xshift=-12mm] at ($(I)+(90:\topRad)$) {\calligra\fontsize{60}{66}\selectfont\textbf{A QW}};
 
   % arrow removed per request
 \end{tikzpicture}
