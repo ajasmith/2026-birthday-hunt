@@ -2,6 +2,7 @@
 \usepackage[margin=10mm]{geometry}
 \usepackage[T1]{fontenc}
 \usepackage{xcolor}
+\usepackage{xstring}
 \usepackage{calligra}
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,calc}
@@ -14,7 +15,33 @@
 
 % Letter sequences for coded wheel and lookup table
 \def\codedletters{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
-\def\decodedletters{Q,X,M,F,C,R,L,U,I,P,T,A,H,N,Y,B,W,D,G,E,K,O,S,Z,V,J}
+\def\decodedletters{S,Z,V,J,Q,X,M,F,C,R,L,U,I,P,T,A,H,N,Y,B,W,D,G,E,K,O}
+\def\decodeOffset{4}
+\def\decodedMessage{H,E,L,L,O, ,W,O,R,L,D}
+
+% Build encoding map programmatically by walking both lists in parallel
+\makeatletter
+\def\enc@buildmap#1,#2\enc@sep#3,#4\enc@sep{%
+  \expandafter\gdef\csname encode@#1\endcsname{#3}%
+  \enc@cont{#2}{#4}%
+}
+\def\enc@cont#1#2{%
+  \ifx\relax#1\else
+    \enc@buildmap#1\enc@sep#2\enc@sep
+  \fi
+}
+\edef\enc@call{%
+  \noexpand\enc@buildmap
+  \decodedletters,\noexpand\relax\noexpand\enc@sep
+  \codedletters,\noexpand\relax\noexpand\enc@sep
+}
+\enc@call
+\makeatother
+
+% Look up encoded character for a given decoded letter
+\newcommand{\encodechar}[1]{%
+  \IfStrEq{#1}{ }{~}{\csname encode@#1\endcsname}%
+}
 
 \begin{document}
 \begin{center}
@@ -68,7 +95,7 @@
   }
 
   \foreach \letter [count=\idx from 0] in \decodedletters {
-    \pgfmathsetmacro\ang{90-(\idx+0.5)*\letterAngle}
+    \pgfmathsetmacro\ang{90-(\idx-\decodeOffset+0.5)*\letterAngle}
     \node[font=\sffamily\bfseries\Huge, rotate=\ang-90] at ($(O)+(\ang: { (\decodedLabelRo + \decodedLabelRi)/2 })$) {\letter};
   }
 
@@ -92,12 +119,12 @@
   \pgfmathsetmacro\angEnd{\angCenter - \letterAngle/2}
   \fill[red!70] (I) -- ($(I)+(\angStart: \innerRo)$) arc (\angStart: \angEnd: \innerRo) -- cycle;
   % second wedge rotated by 4 segments, stops at decodedLabelRo
-  \pgfmathsetmacro\angCenterTwo{4*\letterAngle-90}
+  \pgfmathsetmacro\angCenterTwo{\decodeOffset*\letterAngle-90}
   \pgfmathsetmacro\angStartTwo{\angCenterTwo + \letterAngle/2}
   \pgfmathsetmacro\angEndTwo{\angCenterTwo - \letterAngle/2}
-  \fill[paleblue] (I) -- ($(I)+(\angStartTwo: \decodedLabelRo)$) arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- cycle;
+  \fill[lightbrown] (I) -- ($(I)+(\angStartTwo: \decodedLabelRo)$) arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- cycle;
   % overlay decoded-text area for second wedge in pale blue
-  \fill[paleblue] ($(I)+(\angStartTwo: \decodedLabelRi)$) -- ($(I)+(\angStartTwo: \decodedLabelRo)$)
+  \fill[lightbrown] ($(I)+(\angStartTwo: \decodedLabelRi)$) -- ($(I)+(\angStartTwo: \decodedLabelRo)$)
     arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- ($(I)+(\angEndTwo: \decodedLabelRi)$)
     arc (\angEndTwo: \angStartTwo: \decodedLabelRi) -- cycle;
   % keep previous black overlay on decoded-text area as requested
@@ -122,4 +149,46 @@
   % arrow removed per request
 \end{tikzpicture}
 \end{center}
+
+\newpage
+\section*{Message Encoding}
+\vspace{1cm}
+
+\noindent
+\Large
+\sffamily\bfseries
+
+% Decoded message line
+\subsection*{Original message}
+\foreach \char in \decodedMessage {%
+  \ifx\char %
+    ~%
+  \else
+    \char
+  \fi
+  \quad
+}\\[0.5cm]
+
+% Encoded message line
+\subsection*{Encoded message in worksheet form}
+\foreach \char in \decodedMessage {%
+  \encodechar{\char}%
+  \quad
+}
+
+
+\section*{Encoded Message}
+\vspace{1cm}
+
+\noindent
+\Large
+
+\foreach \char in \decodedMessage {%
+  \ifx\char %
+    ~\quad %
+  \else
+    \fbox{\encodechar{\char}}\quad %
+  \fi
+}
+
 \end{document}
