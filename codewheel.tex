@@ -11,6 +11,11 @@
 \definecolor{paleblue}{RGB}{199,226,255}
 \definecolor{palecoral}{RGB}{227,245,238}
 \pagestyle{empty}
+
+% Letter sequences for coded wheel and lookup table
+\def\codedletters{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
+\def\decodedletters{Q,X,M,F,C,R,L,U,I,P,T,A,H,N,Y,B,W,D,G,E,K,O,S,Z,V,J}
+
 \begin{document}
 \begin{center}
 \begin{tikzpicture}[every node/.style={font=\sffamily\bfseries, inner sep=0pt, align=center}]
@@ -57,12 +62,12 @@
 
   % radial separators removed to avoid black lines between sections
 
-  \foreach \letter [count=\idx from 0] in {A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z} {
+  \foreach \letter [count=\idx from 0] in \codedletters {
     \pgfmathsetmacro\ang{90-(\idx+0.5)*\letterAngle}
     \node[font=\sffamily\bfseries\Huge, rotate=\ang-90] at ($(O)+(\ang: \outerLabelRo)$) {\letter};
   }
 
-  \foreach \letter [count=\idx from 0] in {Q,X,M,F,C,R,L,U,I,P,T,A,H,N,Y,B,W,D,G,E,K,O,S,Z,V,J} {
+  \foreach \letter [count=\idx from 0] in \decodedletters {
     \pgfmathsetmacro\ang{90-(\idx+0.5)*\letterAngle}
     \node[font=\sffamily\bfseries\Huge, rotate=\ang-90] at ($(O)+(\ang: { (\decodedLabelRo + \decodedLabelRi)/2 })$) {\letter};
   }
