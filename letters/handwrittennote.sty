@@ -1,0 +1,87 @@
+% handwrittennote.sty
+% Shared styles for handwritten-style A5 notes.
+% Usage: \usepackage{handwrittennote} in a documentclass[a5paper,12pt]{article}
+%
+% Structural commands available:
+%   \noteheader{Date}        — right-aligned sender + date block
+%   \notedear{Name}          — "Dear Name," greeting line
+%   \notesignoff{Sender}     — closing "With love, <Sender>" block
+%   \signature               — inserts img/signature.png
+%   \initials                — inserts sender initials text
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{handwrittennote}[2026/06/24 Handwritten Note Styles]
+
+% ── Packages ─────────────────────────────────────────────────────────────────
+\RequirePackage[a5paper, margin=18mm, top=20mm, bottom=20mm]{geometry}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{emerald}
+\RequirePackage{xcolor}
+\RequirePackage{parskip}
+\RequirePackage[protrusion=false,expansion=false]{microtype}
+\RequirePackage{graphicx}
+\RequirePackage{tikz}
+\graphicspath{{../img/}}
+
+% ── Colours ──────────────────────────────────────────────────────────────────
+\definecolor{inkblue}{RGB}{30, 50, 120}
+\definecolor{papertone}{RGB}{255, 252, 240}
+
+% ── Global appearance ────────────────────────────────────────────────────────
+\pagecolor{papertone}
+\color{inkblue}
+\AtBeginDocument{\ECFAugie}
+\pagestyle{empty}
+
+% ── Ruled background ─────────────────────────────────────────────────────────
+\newcommand{\ruledbackground}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \foreach \y in {1,...,22} {
+      \draw[gray!30, line width=0.3pt]
+        ([yshift=-\y*11mm+5mm]current page.north west) --
+        ([yshift=-\y*11mm+5mm]current page.north east);
+    }
+  \end{tikzpicture}%
+}
+
+% ── Sender block (top-right) ──────────────────────────────────────────────────
+% \noteheader{Date}
+% Location is set via \notelocation (default: Mystery Hill)
+\newcommand{\notelocation}{Mystery Hill}
+\newcommand{\noteheader}[1]{%
+  \ruledbackground
+  \begin{flushright}
+    \large\notelocation\\[2pt]
+    \normalsize #1
+  \end{flushright}
+  \bigskip
+}
+
+% ── Greeting ─────────────────────────────────────────────────────────────────
+\newcommand{\notegreeting}[1]{%
+  #1\par\bigskip
+}
+
+% ── Sign-off ─────────────────────────────────────────────────────────────────
+% \notesignoff{Closing}{Signature / initials}
+\newcommand{\notesignoff}[2]{%
+  \bigskip\bigskip
+  #1,\par\medskip
+  {#2}
+}
+
+% ── Signature and initials ───────────────────────────────────────────────────
+\newcommand{\notesignaturewidth}{0.57\linewidth}
+\newcommand{\notesinitialswidth}{0.35\linewidth}
+
+\newcommand{\signature}[1][\notesignaturewidth]{%
+  \par\medskip
+    \includegraphics[width=#1]{signature-inkblue.png}%
+  \par
+}
+
+\newcommand{\initials}[1][\notesinitialswidth]{%
+  \par\medskip
+    \includegraphics[width=#1]{initials-inkblue.png}%
+  \par
+}
