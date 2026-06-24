@@ -17,7 +17,7 @@
 \def\codedletters{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 \def\decodedletters{S,Z,V,J,Q,X,M,F,C,R,L,U,I,P,T,A,H,N,Y,B,W,D,G,E,K,O}
 \def\decodeOffset{4}
-\def\decodedMessage{HELLO WORLD}
+\def\decodedMessage{UNDER JUDYS BENCH TO THE WEST THEN FIND GIANT TREE}
 
 % Build encoding map programmatically by walking both lists in parallel
 \makeatletter
@@ -41,6 +41,14 @@
 % Look up encoded character for a given decoded letter
 \newcommand{\encodechar}[1]{%
   \IfStrEq{#1}{ }{~}{\csname encode@#1\endcsname}%
+}
+
+% One encoded cell: top box with letter and bottom blank box of same size
+\newcommand{\encodedpairbox}[1]{%
+  \begin{tikzpicture}[baseline=(top.base)]
+    \node[draw, line width=0.8pt, minimum width=1.35em, minimum height=1.55em, inner sep=0.08em] (top) {\strut #1};
+    \node[draw, line width=0.8pt, minimum width=1.35em, minimum height=1.55em, inner sep=0.08em, anchor=north] at (top.south) {};
+  \end{tikzpicture}%
 }
 
 \newcount\msgidx
@@ -143,7 +151,7 @@
   % keep previous black overlay on decoded-text area as requested
   \fill[black] ($(I)+(\angStartTwo: \decodedLabelRi)$) -- ($(I)+(\angStartTwo: \decodedLabelRo)$)
     arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- ($(I)+(\angEndTwo: \decodedLabelRi)$)
-    arc (\angEndTwo: \angStartTwo: \decodedLabelRi) -- cycle;
+    arc (\angEndTwo: \angStartTwo: \decodedLabelRi) 	-- cycle;
 
   \coordinate (W) at ($(I)+(\windowAngle:\windowDist)$);
   \fill[black] (W) circle (\windowR);
@@ -164,40 +172,27 @@
 \end{center}
 
 \newpage
-\section*{Message Encoding}
-\vspace{1cm}
-
 \noindent
 \Large
 \sffamily\bfseries
 
-% Decoded message line
-\subsection*{Original message}
-\foreachmessagechar{%
-  \IfStrEq{\msgchar}{ }{~}{\msgchar}%
-  \quad
-}\\[0.5cm]
-
-% Encoded message line
-\subsection*{Encoded message in worksheet form}
-\foreachmessagechar{%
-  \encodechar{\msgchar}%
-  \quad
-}
-
-
-\section*{Encoded Message}
-\vspace{1cm}
-
 \noindent
-\Large
+\sffamily\bfseries\fontsize{30}{34}\selectfont
+\raggedright
+\setlength{\lineskip}{1.2em}
+\setlength{\lineskiplimit}{0pt}
 
 \foreachmessagechar{%
   \IfStrEq{\msgchar}{ }{%
-    ~\quad %
+    \hspace{1.2em}\allowbreak%
   }{%
-    \fbox{\encodechar{\msgchar}}\quad %
+    \encodedpairbox{\encodechar{\msgchar}}%
   }%
 }
+
+\newpage
+% Decoded message line
+\subsection*{Original message}
+\decodedMessage
 
 \end{document}
