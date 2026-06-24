@@ -17,7 +17,7 @@
 \def\codedletters{A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z}
 \def\decodedletters{S,Z,V,J,Q,X,M,F,C,R,L,U,I,P,T,A,H,N,Y,B,W,D,G,E,K,O}
 \def\decodeOffset{4}
-\def\decodedMessage{H,E,L,L,O, ,W,O,R,L,D}
+\def\decodedMessage{HELLO WORLD}
 
 % Build encoding map programmatically by walking both lists in parallel
 \makeatletter
@@ -41,6 +41,19 @@
 % Look up encoded character for a given decoded letter
 \newcommand{\encodechar}[1]{%
   \IfStrEq{#1}{ }{~}{\csname encode@#1\endcsname}%
+}
+
+\newcount\msgidx
+\newcommand{\foreachmessagechar}[1]{%
+  \StrLen{\decodedMessage}[\decodedMessageLen]%
+  \msgidx=1
+  \loop
+    \ifnum\msgidx>\decodedMessageLen
+    \else
+      \StrChar{\decodedMessage}{\the\msgidx}[\msgchar]%
+      #1%
+      \advance\msgidx by 1
+  \repeat
 }
 
 \begin{document}
@@ -160,19 +173,15 @@
 
 % Decoded message line
 \subsection*{Original message}
-\foreach \char in \decodedMessage {%
-  \ifx\char %
-    ~%
-  \else
-    \char
-  \fi
+\foreachmessagechar{%
+  \IfStrEq{\msgchar}{ }{~}{\msgchar}%
   \quad
 }\\[0.5cm]
 
 % Encoded message line
 \subsection*{Encoded message in worksheet form}
-\foreach \char in \decodedMessage {%
-  \encodechar{\char}%
+\foreachmessagechar{%
+  \encodechar{\msgchar}%
   \quad
 }
 
@@ -183,12 +192,12 @@
 \noindent
 \Large
 
-\foreach \char in \decodedMessage {%
-  \ifx\char %
+\foreachmessagechar{%
+  \IfStrEq{\msgchar}{ }{%
     ~\quad %
-  \else
-    \fbox{\encodechar{\char}}\quad %
-  \fi
+  }{%
+    \fbox{\encodechar{\msgchar}}\quad %
+  }%
 }
 
 \end{document}
