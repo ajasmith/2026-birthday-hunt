@@ -1,11 +1,19 @@
 \documentclass[a4paper]{article}
 \usepackage[margin=10mm]{geometry}
 \usepackage[T1]{fontenc}
+\usepackage{emerald}
 \usepackage{xcolor}
 \usepackage{xstring}
+\usepackage{graphicx}
 \usepackage{calligra}
 \usepackage{tikz}
+\makeatletter
+\def\input@path{{letters/}}
+\makeatother
+\usepackage{notelines}
 \usetikzlibrary{arrows.meta,calc}
+\definecolor{inkblue}{RGB}{30,50,120}
+\definecolor{papertone}{RGB}{255,252,240}
 \definecolor{lightbrown}{RGB}{222,184,135}
 \definecolor{lightred}{RGB}{255,204,203}
 \definecolor{palegreen}{RGB}{198,234,195}
@@ -46,8 +54,8 @@
 % One encoded cell: top box with letter and bottom blank box of same size
 \newcommand{\encodedpairbox}[1]{%
   \begin{tikzpicture}[baseline=(top.base)]
-    \node[draw, line width=0.8pt, minimum width=1.35em, minimum height=1.55em, inner sep=0.08em] (top) {\strut #1};
-    \node[draw, line width=0.8pt, minimum width=1.35em, minimum height=1.55em, inner sep=0.08em, anchor=north] at (top.south) {};
+    \node[draw=inkblue, text=inkblue, line width=1.2pt, minimum width=1.35em, minimum height=1.55em, inner sep=0.08em] (top) {\strut #1};
+    \node[draw=inkblue, line width=1.2pt, minimum width=1.35em, minimum height=1.55em, inner sep=0.08em, anchor=north] at (top.south) {};
   \end{tikzpicture}%
 }
 
@@ -135,12 +143,12 @@
   \fill[palecoral] (I) circle (\innerRo);
   \draw[line width=2pt] (I) circle (\innerRo);
   % highlight one segment on Wheel 2 (angular width = one letter), centered at 0 degrees
-  \pgfmathsetmacro\angCenter{-90}
+  \pgfmathsetmacro\angCenter{-67}
   \pgfmathsetmacro\angStart{\angCenter + \letterAngle/2}
   \pgfmathsetmacro\angEnd{\angCenter - \letterAngle/2}
   \fill[red!70] (I) -- ($(I)+(\angStart: \innerRo)$) arc (\angStart: \angEnd: \innerRo) -- cycle;
   % second wedge rotated by 4 segments, stops at decodedLabelRo
-  \pgfmathsetmacro\angCenterTwo{\decodeOffset*\letterAngle-90}
+  \pgfmathsetmacro\angCenterTwo{\decodeOffset*\letterAngle+\angCenter}
   \pgfmathsetmacro\angStartTwo{\angCenterTwo + \letterAngle/2}
   \pgfmathsetmacro\angEndTwo{\angCenterTwo - \letterAngle/2}
   \fill[lightbrown] (I) -- ($(I)+(\angStartTwo: \decodedLabelRo)$) arc (\angStartTwo: \angEndTwo: \decodedLabelRo) -- cycle;
@@ -165,19 +173,22 @@
 
   % top-hemisphere cursive text for Wheel 2 (upright)
     \pgfmathsetlengthmacro\topRad{0.35*\innerRo}
-    \node[anchor=center, inner sep=0pt, xshift=-12mm] at ($(I)+(90:\topRad)$) {\calligra\fontsize{60}{66}\selectfont\textbf{A QW}};
+    \node[anchor=center, inner sep=0pt, yshift=3mm] at ($(I)+(90:\topRad)$) {\includegraphics[width=90mm]{img/initials-inkblue.png}};
 
   % arrow removed per request
 \end{tikzpicture}
 \end{center}
 
 \newpage
-\noindent
-\Large
-\sffamily\bfseries
+\pagecolor{papertone}
+\color{inkblue}
+\ECFAugie
+\ruledbackground
 
 \noindent
-\sffamily\bfseries\fontsize{30}{34}\selectfont
+\fontsize{26}{30}\selectfont
+
+\noindent
 \raggedright
 \setlength{\lineskip}{1.2em}
 \setlength{\lineskiplimit}{0pt}
@@ -190,7 +201,13 @@
   }%
 }
 
+\vfill
+\hfill \includegraphics[width=30mm]{img/initials-inkblue.png}
+
 \newpage
+\nopagecolor
+\color{black}
+\normalfont
 % Decoded message line
 \subsection*{Original message}
 \decodedMessage
