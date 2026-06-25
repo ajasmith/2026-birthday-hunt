@@ -1,0 +1,14 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{notelines}[2026/06/25 Shared ruled note background]
+
+\RequirePackage{tikz}
+
+\newcommand{\ruledbackground}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \foreach \y in {1,...,22} {
+      \draw[gray!30, line width=0.3pt]
+        ([yshift=-\y*11mm+5mm]current page.north west) --
+        ([yshift=-\y*11mm+5mm]current page.north east);
+    }
+  \end{tikzpicture}%
+}

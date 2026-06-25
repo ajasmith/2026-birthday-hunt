@@ -21,6 +21,7 @@
 \RequirePackage[protrusion=false,expansion=false]{microtype}
 \RequirePackage{graphicx}
 \RequirePackage{tikz}
+\RequirePackage{notelines}
 \graphicspath{{../img/}}
 
 % ── Colours ──────────────────────────────────────────────────────────────────
@@ -32,17 +33,6 @@
 \color{inkblue}
 \AtBeginDocument{\ECFAugie}
 \pagestyle{empty}
-
-% ── Ruled background ─────────────────────────────────────────────────────────
-\newcommand{\ruledbackground}{%
-  \begin{tikzpicture}[remember picture, overlay]
-    \foreach \y in {1,...,22} {
-      \draw[gray!30, line width=0.3pt]
-        ([yshift=-\y*11mm+5mm]current page.north west) --
-        ([yshift=-\y*11mm+5mm]current page.north east);
-    }
-  \end{tikzpicture}%
-}
 
 % ── Sender block (top-right) ──────────────────────────────────────────────────
 % \noteheader{Date}
