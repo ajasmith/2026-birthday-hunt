@@ -66,7 +66,7 @@
 % \notesignoff{Closing}{Signature / initials}
 \newcommand{\notesignoff}[2]{%
   \bigskip\bigskip
-  #1,\par\medskip
+  #1\par\medskip
   {#2}
 }
 
@@ -83,5 +83,16 @@
 \newcommand{\initials}[1][\notesinitialswidth]{%
   \par\medskip
     \includegraphics[width=#1]{initials-inkblue.png}%
+  \par
+}
+
+% ── Riddle / Poem environment ────────────────────────────────────────────────
+% \begin{riddle}...\end{riddle}
+% Indented, smaller verse for riddles or poems
+\newenvironment{riddle}{%
+  \par\smallskip
+  \begin{quote}\small\linespread{1.2}\selectfont
+}{%
+  \end{quote}
   \par
 }
