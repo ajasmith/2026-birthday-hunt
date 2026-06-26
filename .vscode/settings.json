@@ -2,6 +2,8 @@
     "chat.tools.terminal.autoApprove": {
         "git config": true,
         "git remote": true,
-        "pdflatex": true
+        "pdflatex": true,
+        "magick": true,
+        "Get-Item": true
     }
 }
