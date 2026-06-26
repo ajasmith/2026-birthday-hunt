@@ -1,0 +1,30 @@
+\documentclass[a4paper,12pt]{article}
+\makeatletter
+\def\input@path{{letters/}}
+\makeatother
+\usepackage{handwrittennote}
+\usepackage{graphicx}
+\usepackage{eso-pic}
+
+% Keep A4 output for this letter while reusing handwrittennote styles.
+\geometry{a4paper, margin=0mm}
+\graphicspath{{img/}{../img/}}
+\AddToShipoutPictureFG*{%
+  \makebox[0pt][l]{\includegraphics[width=0.95\paperwidth,angle=0,origin=c]{page67mask.png}}%
+  \makebox[0pt][l]{\includegraphics[width=0.95\paperwidth,angle=0,origin=c]{page67alignment2.png}}%
+}
+
+\begin{document}
+\centering
+\vspace*{68mm}
+\rotatebox[origin=c]{20}{%
+\begin{minipage}{0.5\textwidth}
+\notegreeting{This note is not quite what it seems,}
+
+Keep it with you, and safe. It will be able to help you later when you need to dig deeper...
+
+\notesignoff{}{\initials}
+\end{minipage}%
+}
+
+\end{document}
