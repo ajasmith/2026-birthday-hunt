@@ -20,3 +20,16 @@ foreach ($File in $TexFiles) {
 }
 
 Write-Host "Complete"
+
+Write-Host "Merging PDFs..."
+$mergeFiles = @(
+    "welcome.pdf",
+    "waypoint-1.pdf",
+    "waypoint-2.pdf",
+    "waypoint-3.pdf", 
+    "waypoint-6.pdf",
+    "waypoint-7.pdf",
+    "waypoint-8.pdf"
+)
+
+gswin64c -dBATCH -dNOPAUSE -q -sDEVICE=pdfwrite -sOutputFile="combined.pdf" $MergeFiles

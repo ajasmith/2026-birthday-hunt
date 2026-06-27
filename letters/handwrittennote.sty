@@ -78,11 +78,19 @@
 
 % ── Riddle / Poem environment ────────────────────────────────────────────────
 % \begin{riddle}...\end{riddle}
-% Indented, smaller verse for riddles or poems
+% Left-indented, smaller verse for riddles or poems
 \newenvironment{riddle}{%
   \par\smallskip
-  \begin{quote}\small\linespread{1.2}\selectfont
+  \begin{list}{}{%
+    \setlength{\leftmargin}{1.5em}%
+    \setlength{\rightmargin}{0pt}%
+    \setlength{\listparindent}{0pt}%
+    \setlength{\itemindent}{0pt}%
+    \setlength{\parsep}{0pt}%
+    \setlength{\topsep}{0pt}%
+  }%
+  \item\relax\small\linespread{1.2}\selectfont
 }{%
-  \end{quote}
+  \end{list}
   \par
 }
